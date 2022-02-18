@@ -46,13 +46,13 @@ two.step.hybrid <- function(
   {
 
   metadata <- read.table(metadata, sep=",", header=TRUE)
-  filenames_batchwise <- split_files_into_batches()
+  filenames_batchwise <- split_files_into_batches(filenames, metadata)
   batches_idx <- unique(metadata$batch)
 
   batchwise <- new("list")
   message("**** processing ", length(batches_idx), " batches separately ****")
   for (batch_id in batches_idx) {
-    filenames <- dplyr::filter(filenames, batch == batch_id)$filename
+    filenames <- dplyr::filter(filenames_batchwise, batch == batch_id)$filename
     batchwise_features <- hybrid(
       filenames = filenames_batchwise,
       known_table = known.table,
